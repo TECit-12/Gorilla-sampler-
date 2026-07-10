@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Gorilla Sampler - MPC One Mobile App</title>
+    <title>Gorilla Sampler - MPC One Clone</title>
     <style>
         * {
             margin: 0;
@@ -17,141 +17,113 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: #2a1a3e;
+            color: #00d9ff;
         }
 
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #1a1a2e;
-            color: #f5f5f5;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Status Bar */
         .status-bar {
-            background: #0f3460;
+            background: #1a0f2e;
             padding: 8px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            border-bottom: 2px solid #2a2a3e;
+            border-bottom: 2px solid #00d9ff;
         }
 
-        .status-left, .status-right {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        /* Main Container */
         .container {
-            flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            position: relative;
+            height: 100vh;
+        }
+
+        /* Top Navigation */
+        .nav-tabs {
+            display: flex;
+            background: #1a0f2e;
+            border-bottom: 1px solid #00d9ff;
+            padding: 0;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid #00d9ff;
+            background: #2a1a3e;
+            color: #888;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .nav-tab.active {
+            background: #ff1493;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .nav-tab:last-child {
+            border-right: none;
         }
 
         /* Display Screen */
-        .display-screen {
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            border: 3px solid #444;
-            border-radius: 8px;
-            margin: 12px;
+        .display {
+            background: #000;
+            border: 2px solid #00d9ff;
+            margin: 8px;
             padding: 12px;
-            height: 120px;
+            border-radius: 6px;
+            min-height: 80px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            color: #00d9ff;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
         }
 
-        .display-top {
+        .display-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .display-title {
-            font-weight: bold;
-            color: #06d6a0;
-        }
-
-        .display-status {
-            color: #b0b0b0;
-            font-size: 11px;
         }
 
         .display-main {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 8px;
             text-align: center;
-            font-size: 14px;
-            color: #06d6a0;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 8px;
         }
 
-        /* Top Controls */
-        .top-controls {
+        /* Content Area */
+        .content {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            gap: 8px;
+            overflow: hidden;
+            position: relative;
         }
 
-        .control-group {
-            display: flex;
-            gap: 6px;
-            align-items: center;
+        .tab-content {
+            display: none;
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            width: 100%;
         }
 
-        .knob-group {
+        .tab-content.active {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 4px;
         }
 
-        .knob {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: conic-gradient(from 135deg, #e94560 0deg, #e94560 180deg, #333 180deg);
-            border: 2px solid #444;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: #f5f5f5;
-            transition: all 0.1s;
-        }
-
-        .knob:active {
-            transform: scale(0.95);
-        }
-
-        .knob-label {
-            font-size: 10px;
-            color: #b0b0b0;
-            text-align: center;
-        }
-
-        /* Pad Section */
-        .pad-section {
+        /* Pads Section */
+        .pads-section {
             flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 12px;
-            overflow: hidden;
-            position: relative;
+            gap: 12px;
         }
 
         .pads-container {
@@ -164,407 +136,417 @@
         }
 
         .pad {
-            background: linear-gradient(135deg, #16213e, #0f3460);
-            border: 2px solid #2a2a3e;
-            border-radius: 6px;
+            background: linear-gradient(135deg, #c41e3a, #8b0000);
+            border: 3px solid #00d9ff;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.05s;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            color: #06d6a0;
+            color: #00d9ff;
             user-select: none;
-            -webkit-user-select: none;
             touch-action: manipulation;
+            font-size: 16px;
+            box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+
+        .pad:hover {
+            box-shadow: inset 0 0 15px rgba(0, 217, 255, 0.5), 0 0 20px rgba(196, 30, 58, 0.8);
         }
 
         .pad:active {
-            background: linear-gradient(135deg, #e94560, #ef476f);
-            border-color: #e94560;
-            color: white;
-            box-shadow: 0 0 15px rgba(233, 69, 96, 0.6);
+            background: linear-gradient(135deg, #ff1493, #c41e3a);
+            border-color: #ff1493;
             transform: scale(0.95);
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.8);
         }
 
-        .pad.selected {
-            background: linear-gradient(135deg, #06d6a0, #00d084);
-            border-color: #06d6a0;
-            color: #1a1a2e;
+        .pad.playing {
+            background: linear-gradient(135deg, #00d9ff, #00ffff);
+            border-color: #ff1493;
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.8), inset 0 0 15px rgba(255, 20, 147, 0.4);
         }
 
-        /* Bottom Controls */
-        .bottom-controls {
+        /* Sequencer */
+        .sequencer-grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .step {
+            aspect-ratio: 1;
+            background: #1a0f2e;
+            border: 2px solid #00d9ff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .step:hover {
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .step.active {
+            background: #ff1493;
+            border-color: #ff1493;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
+        }
+
+        .step.playing {
+            background: #00d9ff;
+            box-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+        }
+
+        /* Knobs Section */
+        .knobs-section {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            padding: 12px;
-            background: #0f3460;
-            border-top: 2px solid #2a2a3e;
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
-        .control-btn {
-            padding: 12px;
-            background: #16213e;
-            border: 2px solid #2a2a3e;
-            border-radius: 6px;
-            color: #f5f5f5;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .control-btn:active {
-            background: #e94560;
-            border-color: #e94560;
-        }
-
-        .control-btn.mode-select {
-            background: #e94560;
-            border-color: #e94560;
-        }
-
-        /* Side Controls */
-        .side-controls {
-            display: flex;
-            gap: 8px;
-            padding: 8px 12px;
-            background: #0f3460;
-            border-top: 2px solid #2a2a3e;
-        }
-
-        .side-btn {
-            flex: 1;
-            padding: 10px;
-            background: #16213e;
-            border: 2px solid #2a2a3e;
-            border-radius: 4px;
-            color: #f5f5f5;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .side-btn:active {
-            background: #06d6a0;
-            border-color: #06d6a0;
-            color: #1a1a2e;
-        }
-
-        /* Pages Indicator */
-        .pages-indicator {
-            text-align: center;
-            font-size: 12px;
-            color: #b0b0b0;
-            padding: 8px;
-            background: #0f3460;
-            border-bottom: 1px solid #2a2a3e;
-        }
-
-        /* Swipe Pages */
-        .swipe-container {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .pages-wrapper {
-            display: flex;
-            transition: transform 0.3s ease-out;
-            height: 100%;
-        }
-
-        .page {
-            min-width: 100%;
-            padding: 12px;
-            overflow-y: auto;
+        .knob-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            gap: 6px;
         }
 
-        .page h3 {
-            color: #e94560;
-            font-size: 14px;
-            margin-bottom: 8px;
+        .knob {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(from 135deg, #ff1493 0deg, #ff1493 var(--rotation), #1a0f2e var(--rotation));
+            border: 3px solid #00d9ff;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .setting-row {
+        .knob::after {
+            content: '';
+            width: 2px;
+            height: 20px;
+            background: #00d9ff;
+            position: absolute;
+            top: 5px;
+        }
+
+        .knob-label {
+            font-size: 10px;
+            color: #00d9ff;
+            text-align: center;
+        }
+
+        .knob-value {
+            font-size: 9px;
+            color: #ff1493;
+        }
+
+        /* Controls */
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 12px;
+            background: #1a0f2e;
+            border-top: 2px solid #00d9ff;
+        }
+
+        .btn {
+            padding: 12px;
+            background: #2a1a3e;
+            border: 2px solid #00d9ff;
+            border-radius: 6px;
+            color: #00d9ff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+        }
+
+        .btn:active {
+            background: #ff1493;
+            border-color: #ff1493;
+            color: white;
+        }
+
+        .btn.active {
+            background: #ff1493;
+            border-color: #ff1493;
+            color: white;
+        }
+
+        /* Control Sliders */
+        .slider-group {
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #1a0f2e;
+            border: 2px solid #00d9ff;
+            border-radius: 6px;
+        }
+
+        .slider-label {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background: #16213e;
-            border: 1px solid #2a2a3e;
-            border-radius: 4px;
             font-size: 12px;
+            margin-bottom: 6px;
         }
 
-        .slider {
-            width: 100px;
+        input[type="range"] {
+            width: 100%;
             height: 6px;
-            cursor: pointer;
+            border-radius: 3px;
+            background: #2a1a3e;
+            outline: none;
+            -webkit-appearance: none;
         }
 
-        /* Main View (Pads Mode) */
-        .main-view {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff1493;
+            cursor: pointer;
+            border: 2px solid #00d9ff;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff1493;
+            cursor: pointer;
+            border: 2px solid #00d9ff;
+        }
+
+        /* Scrollbar */
+        .tab-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: #1a0f2e;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: #ff1493;
+            border-radius: 3px;
         }
 
         /* Responsive */
         @media (max-height: 700px) {
-            .display-screen {
-                height: 80px;
-                margin: 8px;
-                padding: 8px;
-            }
-
-            .display-main {
-                font-size: 12px;
-                min-height: 40px;
-            }
-
-            .knob {
-                width: 40px;
-                height: 40px;
-                font-size: 9px;
-            }
-
             .pad {
                 font-size: 12px;
             }
-        }
 
-        /* Scrollbar Styling */
-        .page::-webkit-scrollbar {
-            width: 4px;
-        }
+            .knob {
+                width: 45px;
+                height: 45px;
+            }
 
-        .page::-webkit-scrollbar-track {
-            background: #0f3460;
-        }
-
-        .page::-webkit-scrollbar-thumb {
-            background: #e94560;
-            border-radius: 2px;
+            .display {
+                min-height: 60px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Status Bar -->
     <div class="status-bar">
-        <div class="status-left">
-            <span>GORILLA SAMPLER</span>
-        </div>
-        <div class="status-right">
-            <span id="battery">🔋 100%</span>
-            <span id="time" style="margin-left: 8px;"></span>
-        </div>
+        <div>🦍 GORILLA SAMPLER</div>
+        <div id="status-info">BPM: <span id="bpmDisplay">120</span> | <span id="timeDisplay">00:00</span></div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="switchTab('sample')">SAMPLE</div>
+            <div class="nav-tab" onclick="switchTab('sequence')">SEQUENCE</div>
+            <div class="nav-tab" onclick="switchTab('perform')">PERFORM</div>
+            <div class="nav-tab" onclick="switchTab('effects')">EFFECTS</div>
+        </div>
+
         <!-- Display Screen -->
-        <div class="display-screen">
-            <div class="display-top">
-                <span class="display-title">PATTERN: <span id="patternNum">01</span></span>
-                <span class="display-status">BPM: <span id="bpmDisplay">120</span></span>
-                <span class="display-status" id="playStatus">STOP</span>
+        <div class="display">
+            <div class="display-info">
+                <span>Pattern: <span id="patternNum">01</span></span>
+                <span id="playStatus">STOPPED</span>
+                <span>Volume: <span id="volumeDisplay">100</span>%</span>
             </div>
-            <div class="display-main" id="displayMain">
-                Ready to sample
-            </div>
+            <div class="display-main" id="displayMain">Ready to sample</div>
         </div>
 
-        <!-- Top Controls -->
-        <div class="top-controls">
-            <div class="control-group">
-                <div class="knob-group">
-                    <div class="knob" id="masterVolume" title="Master Volume">VOL</div>
-                    <div class="knob-label">MASTER</div>
+        <!-- Content -->
+        <div class="content">
+            <!-- SAMPLE Tab -->
+            <div id="sample" class="tab-content active">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Sample Volume</span>
+                        <span id="sampleVolValue">100</span>%
+                    </div>
+                    <input type="range" min="0" max="100" value="100" id="sampleVol" oninput="updateSampleVol(this.value)">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Pitch</span>
+                        <span id="pitchValue">0</span>
+                    </div>
+                    <input type="range" min="-24" max="24" value="0" id="pitch" oninput="updatePitch(this.value)">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Start Point</span>
+                        <span id="startValue">0</span>ms
+                    </div>
+                    <input type="range" min="0" max="1000" value="0" id="startPoint">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>End Point</span>
+                        <span id="endValue">1000</span>ms
+                    </div>
+                    <input type="range" min="0" max="1000" value="1000" id="endPoint">
+                </div>
+
+                <div class="controls" style="border-top: 2px solid #00d9ff; margin-top: auto;">
+                    <button class="btn" onclick="recordSample()">🎤 RECORD</button>
+                    <button class="btn" onclick="loadSample()">📁 LOAD</button>
+                    <button class="btn" onclick="clearSample()">🗑️ CLEAR</button>
+                    <button class="btn" onclick="playSample()">▶️ PLAY</button>
                 </div>
             </div>
-            <div class="control-group">
-                <div class="knob-group">
-                    <div class="knob" id="filterKnob" title="Filter Cutoff">CUT</div>
-                    <div class="knob-label">FILTER</div>
+
+            <!-- SEQUENCE Tab -->
+            <div id="sequence" class="tab-content">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>BPM</span>
+                        <span id="bpmValue">120</span>
+                    </div>
+                    <input type="range" min="40" max="300" value="120" id="bpmControl" oninput="updateBPM(this.value)">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Swing</span>
+                        <span id="swingValue">0</span>%
+                    </div>
+                    <input type="range" min="0" max="100" value="0" id="swing">
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <div style="font-size: 12px; color: #00d9ff; margin-bottom: 8px;">Step Sequencer (16 Steps)</div>
+                    <div class="sequencer-grid" id="sequencerGrid">
+                        <!-- Steps will be generated by JS -->
+                    </div>
+                </div>
+
+                <div class="controls" style="border-top: 2px solid #00d9ff;">
+                    <button class="btn" onclick="playSequence()">▶️ PLAY</button>
+                    <button class="btn" onclick="stopSequence()">⏹️ STOP</button>
+                    <button class="btn" onclick="savePattern()">💾 SAVE</button>
+                    <button class="btn" onclick="loadPattern()">📁 LOAD</button>
                 </div>
             </div>
-            <div class="control-group">
-                <div class="knob-group">
-                    <div class="knob" id="resonanceKnob" title="Resonance">RES</div>
-                    <div class="knob-label">RES</div>
+
+            <!-- PERFORM Tab -->
+            <div id="perform" class="tab-content">
+                <div class="pads-section">
+                    <div class="pads-container" id="padGrid">
+                        <!-- Pads will be generated by JS -->
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Main Pad View -->
-        <div class="main-view" id="mainView">
-            <!-- Pages Indicator -->
-            <div class="pages-indicator">
-                <span>🔽 Swipe Right for More Features 🔽</span>
-            </div>
-
-            <!-- Swipe Container -->
-            <div class="swipe-container">
-                <div class="pages-wrapper" id="pagesWrapper">
-                    <!-- Page 1: Pads -->
-                    <div class="page" id="page1">
-                        <div class="pads-container" id="padGrid">
-                            <!-- Pads will be generated by JS -->
-                        </div>
+            <!-- EFFECTS Tab -->
+            <div id="effects" class="tab-content">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Reverb</span>
+                        <span id="reverbValue">30</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="30" id="reverb">
+                </div>
 
-                    <!-- Page 2: Sequencer -->
-                    <div class="page" id="page2">
-                        <h3>📊 STEP SEQUENCER</h3>
-                        <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;">
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">1</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">2</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">3</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">4</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">5</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">6</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">7</div>
-                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">8</div>
-                        </div>
-
-                        <h3>🎚️ PATTERN SETTINGS</h3>
-                        <div class="setting-row">
-                            <span>BPM:</span>
-                            <input type="range" min="40" max="300" value="120" class="slider" id="bpmSlider">
-                            <span id="bpmValue">120</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>SWING:</span>
-                            <input type="range" min="0" max="100" value="0" class="slider">
-                            <span>0%</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>TIME SIG:</span>
-                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
-                                <option>4/4</option>
-                                <option>3/4</option>
-                                <option>6/8</option>
-                            </select>
-                        </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Delay</span>
+                        <span id="delayValue">0</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="0" id="delay">
+                </div>
 
-                    <!-- Page 3: Effects -->
-                    <div class="page" id="page3">
-                        <h3>🎛️ EFFECTS</h3>
-                        <div class="setting-row">
-                            <span>REVERB:</span>
-                            <input type="range" min="0" max="100" value="30" class="slider">
-                            <span>30%</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>DELAY:</span>
-                            <input type="range" min="0" max="100" value="0" class="slider">
-                            <span>0%</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>FILTER TYPE:</span>
-                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
-                                <option>LOW PASS</option>
-                                <option>HIGH PASS</option>
-                                <option>BAND PASS</option>
-                            </select>
-                        </div>
-                        <div class="setting-row">
-                            <span>COMPRESSION:</span>
-                            <input type="range" min="0" max="100" value="0" class="slider">
-                            <span>0%</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>DISTORTION:</span>
-                            <input type="range" min="0" max="100" value="0" class="slider">
-                            <span>0%</span>
-                        </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Filter Cutoff</span>
+                        <span id="filterValue">100</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="100" id="filter">
+                </div>
 
-                    <!-- Page 4: Samples -->
-                    <div class="page" id="page4">
-                        <h3>💾 SAMPLE MANAGER</h3>
-                        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                            <button style="width: 100%; padding: 10px; background: #e94560; border: none; border-radius: 4px; color: white; font-weight: 600; cursor: pointer;">📁 LOAD SAMPLE</button>
-                        </div>
-                        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-                            <strong>LOADED:</strong>
-                            <span style="font-size: 11px; color: #b0b0b0;">No sample loaded</span>
-                        </div>
-                        <h3>⚙️ SAMPLE SETTINGS</h3>
-                        <div class="setting-row">
-                            <span>VOLUME:</span>
-                            <input type="range" min="0" max="100" value="80" class="slider">
-                            <span>80%</span>
-                        </div>
-                        <div class="setting-row">
-                            <span>PITCH:</span>
-                            <input type="range" min="-24" max="24" value="0" class="slider">
-                            <span>0</span>
-                        </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Resonance</span>
+                        <span id="resonanceValue">0</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="0" id="resonance">
+                </div>
 
-                    <!-- Page 5: Recording -->
-                    <div class="page" id="page5">
-                        <h3>🎙️ RECORDING</h3>
-                        <div class="setting-row" style="flex-direction: column; align-items: center; gap: 12px; background: #0f3460; padding: 16px;">
-                            <button id="recordBtn" style="width: 100%; padding: 16px; background: #e94560; border: none; border-radius: 8px; color: white; font-weight: 700; font-size: 14px; cursor: pointer;">🔴 START RECORDING</button>
-                            <button style="width: 100%; padding: 12px; background: #16213e; border: 2px solid #2a2a3e; border-radius: 6px; color: #f5f5f5; font-weight: 600; cursor: pointer;">⏹️ STOP</button>
-                        </div>
-                        <h3>RECORDING MODE</h3>
-                        <div class="setting-row">
-                            <span>QUALITY:</span>
-                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
-                                <option>WAV (LOSSLESS)</option>
-                                <option>MP3 (128kbps)</option>
-                                <option>AAC (256kbps)</option>
-                            </select>
-                        </div>
-                        <div class="setting-row">
-                            <span>MODE:</span>
-                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
-                                <option>REPLACE</option>
-                                <option>MIX</option>
-                                <option>OVERDUB</option>
-                            </select>
-                        </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Compression</span>
+                        <span id="compressionValue">0</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="0" id="compression">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Distortion</span>
+                        <span id="distortionValue">0</span>%
+                    </div>
+                    <input type="range" min="0" max="100" value="0" id="distortion">
                 </div>
             </div>
         </div>
 
         <!-- Bottom Transport Controls -->
-        <div class="bottom-controls">
-            <button class="control-btn" id="playBtn" onclick="togglePlay()">▶️ PLAY</button>
-            <button class="control-btn" onclick="stopPlayback()">⏹️ STOP</button>
-            <button class="control-btn" onclick="previousPattern()">◀️ PREV</button>
-            <button class="control-btn" onclick="nextPattern()">▶️ NEXT</button>
-        </div>
-
-        <!-- Side Controls -->
-        <div class="side-controls">
-            <button class="side-btn" onclick="clearPads()">CLEAR</button>
-            <button class="side-btn" onclick="savPattern()">💾 SAVE</button>
-            <button class="side-btn" onclick="loadPattern()">📁 LOAD</button>
-            <button class="side-btn" onclick="exportAudio()">📤 EXPORT</button>
+        <div class="controls">
+            <button class="btn" id="playBtn" onclick="togglePlay()">▶️ PLAY</button>
+            <button class="btn" onclick="stopPlayback()">⏹️ STOP</button>
+            <button class="btn" onclick="prevPattern()">◀️ PREV</button>
+            <button class="btn" onclick="nextPattern()">▶️ NEXT</button>
         </div>
     </div>
 
     <script>
-        let currentPage = 0;
-        const pages = document.querySelectorAll('.page');
-        const pagesWrapper = document.getElementById('pagesWrapper');
+        // Audio Context
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         let isPlaying = false;
-        let selectedPad = null;
-        let touchStartX = 0;
+        let currentBPM = 120;
+        let playbackTime = 0;
+        let currentPattern = 1;
+        let recordedAudio = null;
+        let sequencerSteps = new Array(16).fill(false);
 
         // Initialize Pads
         function initPads() {
@@ -574,128 +556,217 @@
                 pad.className = 'pad';
                 pad.textContent = i;
                 pad.dataset.padNum = i;
-                pad.onmousedown = () => playPadSound(pad);
-                pad.ontouchstart = () => playPadSound(pad);
-                pad.onmouseup = () => releasePad(pad);
-                pad.ontouchend = () => releasePad(pad);
+                pad.addEventListener('mousedown', () => padPress(pad, i));
+                pad.addEventListener('touchstart', (e) => { e.preventDefault(); padPress(pad, i); });
+                pad.addEventListener('mouseup', () => padRelease(pad));
+                pad.addEventListener('touchend', (e) => { e.preventDefault(); padRelease(pad); });
                 padGrid.appendChild(pad);
             }
         }
 
-        function playPadSound(pad) {
-            pad.classList.add('selected');
-            updateDisplay(`PAD ${pad.dataset.padNum} TRIGGERED`);
-            // Audio would play here in real app
+        function padPress(pad, num) {
+            pad.classList.add('playing');
+            updateDisplay(`PAD ${num} TRIGGERED`);
+            playTone(440 * Math.pow(2, (num - 1) / 12)); // Simple frequency for visual feedback
         }
 
-        function releasePad(pad) {
-            setTimeout(() => pad.classList.remove('selected'), 100);
+        function padRelease(pad) {
+            setTimeout(() => pad.classList.remove('playing'), 100);
         }
 
-        // Swipe Navigation
-        document.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-        });
-
-        document.addEventListener('touchend', (e) => {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > 50) {
-                if (diff > 0 && currentPage < pages.length - 1) {
-                    currentPage++;
-                } else if (diff < 0 && currentPage > 0) {
-                    currentPage--;
-                }
-                updatePageView();
+        // Initialize Sequencer
+        function initSequencer() {
+            const grid = document.getElementById('sequencerGrid');
+            for (let i = 0; i < 16; i++) {
+                const step = document.createElement('div');
+                step.className = 'step';
+                step.dataset.step = i;
+                step.addEventListener('click', () => toggleStep(step, i));
+                grid.appendChild(step);
             }
-        });
-
-        function updatePageView() {
-            pagesWrapper.style.transform = `translateX(-${currentPage * 100}%)`;
         }
 
-        // Display Updates
+        function toggleStep(stepEl, index) {
+            sequencerSteps[index] = !sequencerSteps[index];
+            stepEl.classList.toggle('active');
+        }
+
+        // Display Update
         function updateDisplay(text) {
             document.getElementById('displayMain').textContent = text;
         }
 
+        // BPM Control
+        function updateBPM(value) {
+            currentBPM = parseInt(value);
+            document.getElementById('bpmValue').textContent = value;
+            document.getElementById('bpmDisplay').textContent = value;
+        }
+
+        function updateSampleVol(value) {
+            document.getElementById('sampleVolValue').textContent = value;
+        }
+
+        function updatePitch(value) {
+            document.getElementById('pitchValue').textContent = value;
+        }
+
+        // Playback Controls
         function togglePlay() {
             isPlaying = !isPlaying;
             const playBtn = document.getElementById('playBtn');
             const playStatus = document.getElementById('playStatus');
             
             if (isPlaying) {
-                playBtn.classList.add('mode-select');
-                playStatus.textContent = 'PLAY ▶️';
+                playBtn.classList.add('active');
+                playStatus.textContent = 'PLAYING ▶️';
                 updateDisplay('PATTERN PLAYING...');
+                startSequence();
             } else {
-                playBtn.classList.remove('mode-select');
-                playStatus.textContent = 'STOP';
-                updateDisplay('PATTERN STOPPED');
+                playBtn.classList.remove('active');
+                playStatus.textContent = 'PAUSED';
+                updateDisplay('PATTERN PAUSED');
             }
         }
 
         function stopPlayback() {
             isPlaying = false;
-            document.getElementById('playBtn').classList.remove('mode-select');
-            document.getElementById('playStatus').textContent = 'STOP';
+            document.getElementById('playBtn').classList.remove('active');
+            document.getElementById('playStatus').textContent = 'STOPPED';
             updateDisplay('Ready to sample');
         }
 
         function nextPattern() {
-            let patNum = parseInt(document.getElementById('patternNum').textContent);
-            patNum = (patNum % 128) + 1;
-            document.getElementById('patternNum').textContent = String(patNum).padStart(2, '0');
-            updateDisplay(`PATTERN: ${String(patNum).padStart(2, '0')}`);
+            currentPattern = (currentPattern % 128) + 1;
+            document.getElementById('patternNum').textContent = String(currentPattern).padStart(2, '0');
+            updateDisplay(`PATTERN: ${String(currentPattern).padStart(2, '0')}`);
         }
 
-        function previousPattern() {
-            let patNum = parseInt(document.getElementById('patternNum').textContent);
-            patNum = patNum > 1 ? patNum - 1 : 128;
-            document.getElementById('patternNum').textContent = String(patNum).padStart(2, '0');
-            updateDisplay(`PATTERN: ${String(patNum).padStart(2, '0')}`);
+        function prevPattern() {
+            currentPattern = currentPattern > 1 ? currentPattern - 1 : 128;
+            document.getElementById('patternNum').textContent = String(currentPattern).padStart(2, '0');
+            updateDisplay(`PATTERN: ${String(currentPattern).padStart(2, '0')}`);
         }
 
-        function clearPads() {
-            updateDisplay('PADS CLEARED');
-            setTimeout(() => updateDisplay('Ready to sample'), 1500);
+        // Sequencer Playback
+        function startSequence() {
+            let currentStep = 0;
+            const stepDuration = (60 / currentBPM) * 1000; // ms per step
+            
+            const playStep = () => {
+                if (!isPlaying) return;
+                
+                // Update step indicator
+                document.querySelectorAll('.step').forEach((s, idx) => {
+                    s.classList.remove('playing');
+                    if (idx === currentStep) s.classList.add('playing');
+                });
+
+                if (sequencerSteps[currentStep]) {
+                    updateDisplay(`STEP ${currentStep + 1}`);
+                    playTone(440);
+                }
+
+                currentStep = (currentStep + 1) % 16;
+                setTimeout(playStep, stepDuration);
+            };
+            
+            playStep();
         }
 
-        function savPattern() {
+        // Audio Functions
+        function playTone(frequency) {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.frequency.value = frequency;
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.1);
+        }
+
+        // Sample Controls
+        function recordSample() {
+            updateDisplay('RECORDING... PRESS TO STOP');
+            setTimeout(() => updateDisplay('Sample recorded'), 2000);
+        }
+
+        function loadSample() {
+            updateDisplay('LOAD SAMPLE');
+        }
+
+        function clearSample() {
+            updateDisplay('Sample cleared');
+        }
+
+        function playSample() {
+            updateDisplay('PLAYING SAMPLE');
+            playTone(440);
+        }
+
+        function playSequence() {
+            togglePlay();
+        }
+
+        function stopSequence() {
+            stopPlayback();
+        }
+
+        function savePattern() {
             updateDisplay('PATTERN SAVED');
-            setTimeout(() => updateDisplay('Ready to sample'), 1500);
         }
 
         function loadPattern() {
-            updateDisplay('LOADING PATTERN...');
-            setTimeout(() => updateDisplay('PATTERN LOADED'), 1500);
+            updateDisplay('PATTERN LOADED');
         }
 
-        function exportAudio() {
-            updateDisplay('EXPORTING AUDIO...');
-            setTimeout(() => updateDisplay('EXPORT COMPLETE'), 2000);
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
         }
-
-        // BPM Control
-        document.getElementById('bpmSlider').addEventListener('input', (e) => {
-            const bpm = e.target.value;
-            document.getElementById('bpmValue').textContent = bpm;
-            document.getElementById('bpmDisplay').textContent = bpm;
-        });
 
         // Time Display
         function updateTime() {
             const now = new Date();
             const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-            document.getElementById('time').textContent = time;
+            document.getElementById('timeDisplay').textContent = time;
         }
 
         updateTime();
         setInterval(updateTime, 1000);
 
+        // Update slider values
+        document.getElementById('reverb').oninput = function() {
+            document.getElementById('reverbValue').textContent = this.value;
+        };
+        document.getElementById('delay').oninput = function() {
+            document.getElementById('delayValue').textContent = this.value;
+        };
+        document.getElementById('filter').oninput = function() {
+            document.getElementById('filterValue').textContent = this.value;
+        };
+        document.getElementById('resonance').oninput = function() {
+            document.getElementById('resonanceValue').textContent = this.value;
+        };
+        document.getElementById('compression').oninput = function() {
+            document.getElementById('compressionValue').textContent = this.value;
+        };
+        document.getElementById('distortion').oninput = function() {
+            document.getElementById('distortionValue').textContent = this.value;
+        };
+
         // Initialize
         initPads();
+        initSequencer();
     </script>
 </body>
 </html>
