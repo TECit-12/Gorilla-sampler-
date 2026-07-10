@@ -2,666 +2,700 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gorilla Sampler - Professional MPC One Android App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Gorilla Sampler - MPC One Mobile App</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
         }
 
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #e94560;
-            --success: #06d6a0;
-            --text: #f5f5f5;
-            --text-dim: #b0b0b0;
-            --border: #2a2a3e;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            background-attachment: fixed;
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Navigation */
-        nav {
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            padding: 1rem 2rem;
-        }
-
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #e94560, #06d6a0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        nav .links a {
-            margin-left: 2rem;
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        nav .links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
+        html, body {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(233, 69, 96, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(6, 214, 160, 0.15) 0%, transparent 50%);
-            pointer-events: none;
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #1a1a2e;
+            color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
         }
 
-        .hero-content {
-            max-width: 900px;
+        /* Status Bar */
+        .status-bar {
+            background: #0f3460;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            border-bottom: 2px solid #2a2a3e;
+        }
+
+        .status-left, .status-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             position: relative;
-            z-index: 1;
-            animation: slideInUp 0.8s ease-out;
         }
 
-        .hero h1 {
-            font-size: 4em;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #e94560, #06d6a0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 800;
-        }
-
-        .hero p {
-            font-size: 1.5em;
-            color: var(--text-dim);
-            margin-bottom: 2rem;
-        }
-
-        .cta-buttons {
+        /* Display Screen */
+        .display-screen {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 3px solid #444;
+            border-radius: 8px;
+            margin: 12px;
+            padding: 12px;
+            height: 120px;
             display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .btn {
-            padding: 15px 40px;
-            border-radius: 10px;
-            border: none;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #e94560, #ef476f);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(233, 69, 96, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        /* Features Section */
-        .features {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 4rem 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 3rem;
-            color: var(--text);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(22, 33, 62, 0.6);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .feature-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(233, 69, 96, 0.2);
-        }
-
-        .feature-icon {
-            font-size: 3em;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5em;
-            margin-bottom: 1rem;
-            color: var(--accent);
-        }
-
-        .feature-card p {
-            color: var(--text-dim);
-            line-height: 1.8;
-        }
-
-        /* Specs Section */
-        .specs {
-            background: rgba(15, 52, 96, 0.5);
-            padding: 4rem 2rem;
-            margin: 4rem 0;
-        }
-
-        .specs-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .specs-list {
-            list-style: none;
-        }
-
-        .specs-list li {
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border);
+        .display-top {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            font-size: 13px;
         }
 
-        .specs-list li:before {
-            content: "✓";
-            color: var(--success);
+        .display-title {
             font-weight: bold;
-            margin-right: 1rem;
-            font-size: 1.3em;
+            color: #06d6a0;
         }
 
-        .specs-image {
-            background: rgba(26, 26, 46, 0.5);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            padding: 2rem;
+        .display-status {
+            color: #b0b0b0;
+            font-size: 11px;
+        }
+
+        .display-main {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px;
             text-align: center;
-            font-size: 4em;
-        }
-
-        /* Pads Section */
-        .pads-showcase {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 4rem 2rem;
-            text-align: center;
-        }
-
-        .pad-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 2rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .pad {
-            aspect-ratio: 1;
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.8), rgba(239, 71, 111, 0.6));
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-size: 14px;
+            color: #06d6a0;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
         }
 
-        .pad:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
-            background: linear-gradient(135deg, #e94560, #ef476f);
+        /* Top Controls */
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            gap: 8px;
         }
 
-        .pad:active {
+        .control-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .knob-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .knob {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: conic-gradient(from 135deg, #e94560 0deg, #e94560 180deg, #333 180deg);
+            border: 2px solid #444;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #f5f5f5;
+            transition: all 0.1s;
+        }
+
+        .knob:active {
             transform: scale(0.95);
         }
 
-        /* Tech Stack */
-        .tech-stack {
-            background: rgba(15, 52, 96, 0.5);
-            padding: 4rem 2rem;
-            margin: 4rem 0;
-        }
-
-        .tech-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .tech-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .tech-category h4 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.3em;
-        }
-
-        .tech-category ul {
-            list-style: none;
-        }
-
-        .tech-category li {
-            padding: 0.5rem 0;
-            color: var(--text-dim);
-        }
-
-        .tech-category li:before {
-            content: "→ ";
-            color: var(--success);
-            margin-right: 0.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(26, 26, 46, 0.95);
-            border-top: 2px solid var(--border);
-            padding: 3rem 2rem;
+        .knob-label {
+            font-size: 10px;
+            color: #b0b0b0;
             text-align: center;
-            margin-top: 4rem;
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-links {
+        /* Pad Section */
+        .pad-section {
+            flex: 1;
             display: flex;
+            flex-direction: column;
+            padding: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pads-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 8px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .pad {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border: 2px solid #2a2a3e;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.05s;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            font-weight: bold;
+            color: #06d6a0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
 
-        .footer-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: all 0.3s ease;
+        .pad:active {
+            background: linear-gradient(135deg, #e94560, #ef476f);
+            border-color: #e94560;
+            color: white;
+            box-shadow: 0 0 15px rgba(233, 69, 96, 0.6);
+            transform: scale(0.95);
         }
 
-        .footer-links a:hover {
-            color: var(--accent);
+        .pad.selected {
+            background: linear-gradient(135deg, #06d6a0, #00d084);
+            border-color: #06d6a0;
+            color: #1a1a2e;
         }
 
-        /* Animations */
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Bottom Controls */
+        .bottom-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            padding: 12px;
+            background: #0f3460;
+            border-top: 2px solid #2a2a3e;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .control-btn {
+            padding: 12px;
+            background: #16213e;
+            border: 2px solid #2a2a3e;
+            border-radius: 6px;
+            color: #f5f5f5;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
         }
 
-        .feature-card {
-            animation: fadeIn 0.6s ease-out forwards;
+        .control-btn:active {
+            background: #e94560;
+            border-color: #e94560;
         }
 
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
-        .feature-card:nth-child(4) { animation-delay: 0.4s; }
-        .feature-card:nth-child(5) { animation-delay: 0.5s; }
-        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+        .control-btn.mode-select {
+            background: #e94560;
+            border-color: #e94560;
+        }
+
+        /* Side Controls */
+        .side-controls {
+            display: flex;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #0f3460;
+            border-top: 2px solid #2a2a3e;
+        }
+
+        .side-btn {
+            flex: 1;
+            padding: 10px;
+            background: #16213e;
+            border: 2px solid #2a2a3e;
+            border-radius: 4px;
+            color: #f5f5f5;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .side-btn:active {
+            background: #06d6a0;
+            border-color: #06d6a0;
+            color: #1a1a2e;
+        }
+
+        /* Pages Indicator */
+        .pages-indicator {
+            text-align: center;
+            font-size: 12px;
+            color: #b0b0b0;
+            padding: 8px;
+            background: #0f3460;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        /* Swipe Pages */
+        .swipe-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .pages-wrapper {
+            display: flex;
+            transition: transform 0.3s ease-out;
+            height: 100%;
+        }
+
+        .page {
+            min-width: 100%;
+            padding: 12px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .page h3 {
+            color: #e94560;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #16213e;
+            border: 1px solid #2a2a3e;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .slider {
+            width: 100px;
+            height: 6px;
+            cursor: pointer;
+        }
+
+        /* Main View (Pads Mode) */
+        .main-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5em;
+        @media (max-height: 700px) {
+            .display-screen {
+                height: 80px;
+                margin: 8px;
+                padding: 8px;
             }
 
-            .hero p {
-                font-size: 1.2em;
+            .display-main {
+                font-size: 12px;
+                min-height: 40px;
             }
 
-            .cta-buttons {
-                flex-direction: column;
+            .knob {
+                width: 40px;
+                height: 40px;
+                font-size: 9px;
             }
 
-            .btn {
-                width: 100%;
+            .pad {
+                font-size: 12px;
             }
+        }
 
-            .specs-content {
-                grid-template-columns: 1fr;
-            }
+        /* Scrollbar Styling */
+        .page::-webkit-scrollbar {
+            width: 4px;
+        }
 
-            .pad-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 1rem;
-            }
+        .page::-webkit-scrollbar-track {
+            background: #0f3460;
+        }
 
-            nav .links {
-                display: none;
-            }
+        .page::-webkit-scrollbar-thumb {
+            background: #e94560;
+            border-radius: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <div class="logo">🦍 Gorilla Sampler</div>
-            <div class="links">
-                <a href="#features">Features</a>
-                <a href="#specs">Specs</a>
-                <a href="#tech">Tech</a>
-                <a href="https://github.com/TECit-12/Gorilla-sampler-" target="_blank">GitHub</a>
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-left">
+            <span>GORILLA SAMPLER</span>
+        </div>
+        <div class="status-right">
+            <span id="battery">🔋 100%</span>
+            <span id="time" style="margin-left: 8px;"></span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Display Screen -->
+        <div class="display-screen">
+            <div class="display-top">
+                <span class="display-title">PATTERN: <span id="patternNum">01</span></span>
+                <span class="display-status">BPM: <span id="bpmDisplay">120</span></span>
+                <span class="display-status" id="playStatus">STOP</span>
+            </div>
+            <div class="display-main" id="displayMain">
+                Ready to sample
             </div>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Gorilla Sampler</h1>
-            <p>Professional MPC One Workflow on Android</p>
-            <p style="font-size: 1.1em; color: var(--text-dim);">Ultra-low latency sampler & sequencer built with C++ (Oboe API) and Jetpack Compose</p>
-            <div class="cta-buttons">
-                <a href="https://github.com/TECit-12/Gorilla-sampler-" class="btn btn-primary">View on GitHub</a>
-                <a href="#features" class="btn btn-secondary">Learn More</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <h2 class="section-title">Professional Features</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎹</div>
-                <h3>16 Pad Sampler</h3>
-                <p>Professional 4x4 pad interface with velocity sensitivity, LED feedback, and customizable colors. Touch responsiveness optimized for live performance.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🎼</div>
-                <h3>Step Sequencer</h3>
-                <p>16/32/64 step patterns with 128+ pattern banks. Real-time editing, swing/shuffle controls, and pattern chaining for song composition.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🎚️</div>
-                <h3>Audio Effects</h3>
-                <p>Real-time filters (Low-pass, High-pass, Band-pass), reverb, delay, compression, EQ, and distortion with parametric control.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>Ultra-Low Latency</h3>
-                <p>Sub-20ms latency achieved through native C++ audio engine with Oboe API. Professional-grade audio processing for real-time responsiveness.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">🎙️</div>
-                <h3>Multi-Track Recording</h3>
-                <p>Record performances with multiple modes: Replace, Mix, Loop Record. Export to WAV, MP3, and AAC formats with lossless quality options.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">💾</div>
-                <h3>Sample Management</h3>
-                <p>Import, edit, and organize samples. Waveform editing, pitch shift, time stretch, and drag-and-drop pad assignment. Cloud backup support.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pad Showcase -->
-    <section class="pads-showcase">
-        <h2 class="section-title">Interactive 16-Pad Interface</h2>
-        <p style="color: var(--text-dim); margin-bottom: 2rem;">Click to play (in browser demo)</p>
-        <div class="pad-grid">
-            <div class="pad" onclick="playPad(this)">1</div>
-            <div class="pad" onclick="playPad(this)">2</div>
-            <div class="pad" onclick="playPad(this)">3</div>
-            <div class="pad" onclick="playPad(this)">4</div>
-            <div class="pad" onclick="playPad(this)">5</div>
-            <div class="pad" onclick="playPad(this)">6</div>
-            <div class="pad" onclick="playPad(this)">7</div>
-            <div class="pad" onclick="playPad(this)">8</div>
-            <div class="pad" onclick="playPad(this)">9</div>
-            <div class="pad" onclick="playPad(this)">10</div>
-            <div class="pad" onclick="playPad(this)">11</div>
-            <div class="pad" onclick="playPad(this)">12</div>
-            <div class="pad" onclick="playPad(this)">13</div>
-            <div class="pad" onclick="playPad(this)">14</div>
-            <div class="pad" onclick="playPad(this)">15</div>
-            <div class="pad" onclick="playPad(this)">16</div>
-        </div>
-    </section>
-
-    <!-- Specs Section -->
-    <section id="specs" class="specs">
-        <div class="specs-content">
-            <div>
-                <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Performance Specs</h2>
-                <ul class="specs-list">
-                    <li>Audio Latency: < 20ms (ultra-low)</li>
-                    <li>Polyphony: 16+ simultaneous voices</li>
-                    <li>Sample Formats: WAV, MP3, AAC, FLAC</li>
-                    <li>Pattern Storage: 128+ patterns</li>
-                    <li>BPM Range: 40-300 BPM</li>
-                    <li>UI Frame Rate: 60 FPS minimum</li>
-                    <li>Android Support: Android 10+</li>
-                    <li>RAM Efficient: <150MB UI layer</li>
-                </ul>
-            </div>
-            <div class="specs-image">
-                🎵<br><br>Professional<br>Audio Engine
-            </div>
-        </div>
-    </section>
-
-    <!-- Tech Stack -->
-    <section id="tech" class="tech-stack">
-        <div class="tech-content">
-            <h2 class="section-title">Technology Stack</h2>
-            <div class="tech-categories">
-                <div class="tech-category">
-                    <h4>Audio Processing</h4>
-                    <ul>
-                        <li>Oboe API (low-latency)</li>
-                        <li>C++ (native audio engine)</li>
-                        <li>AAudio framework</li>
-                        <li>Real-time DSP processing</li>
-                    </ul>
+        <!-- Top Controls -->
+        <div class="top-controls">
+            <div class="control-group">
+                <div class="knob-group">
+                    <div class="knob" id="masterVolume" title="Master Volume">VOL</div>
+                    <div class="knob-label">MASTER</div>
                 </div>
-
-                <div class="tech-category">
-                    <h4>UI & Framework</h4>
-                    <ul>
-                        <li>Jetpack Compose</li>
-                        <li>Material Design 3</li>
-                        <li>Kotlin/Android</li>
-                        <li>Coroutines & Flow</li>
-                    </ul>
+            </div>
+            <div class="control-group">
+                <div class="knob-group">
+                    <div class="knob" id="filterKnob" title="Filter Cutoff">CUT</div>
+                    <div class="knob-label">FILTER</div>
                 </div>
-
-                <div class="tech-category">
-                    <h4>Development</h4>
-                    <ul>
-                        <li>Android NDK (C++17)</li>
-                        <li>Gradle & CMake</li>
-                        <li>Firebase Analytics</li>
-                        <li>Unit & Integration Tests</li>
-                    </ul>
-                </div>
-
-                <div class="tech-category">
-                    <h4>Quality Assurance</h4>
-                    <ul>
-                        <li>JUnit & Espresso</li>
-                        <li>gtest (C++ tests)</li>
-                        <li>Performance profiling</li>
-                        <li>Crash reporting</li>
-                    </ul>
+            </div>
+            <div class="control-group">
+                <div class="knob-group">
+                    <div class="knob" id="resonanceKnob" title="Resonance">RES</div>
+                    <div class="knob-label">RES</div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="https://github.com/TECit-12/Gorilla-sampler-" target="_blank">GitHub Repository</a>
-                <a href="https://github.com/TECit-12/Gorilla-sampler-/issues" target="_blank">Report Issues</a>
-                <a href="https://github.com/TECit-12/Gorilla-sampler-/discussions" target="_blank">Discussions</a>
+        <!-- Main Pad View -->
+        <div class="main-view" id="mainView">
+            <!-- Pages Indicator -->
+            <div class="pages-indicator">
+                <span>🔽 Swipe Right for More Features 🔽</span>
             </div>
-            <p style="color: var(--text-dim);">Gorilla Sampler © 2026 | A low-latency Android sampler and sequencer application</p>
-            <p style="color: var(--text-dim); font-size: 0.9em; margin-top: 1rem;">Built with C++ (Oboe API) and Jetpack Compose</p>
+
+            <!-- Swipe Container -->
+            <div class="swipe-container">
+                <div class="pages-wrapper" id="pagesWrapper">
+                    <!-- Page 1: Pads -->
+                    <div class="page" id="page1">
+                        <div class="pads-container" id="padGrid">
+                            <!-- Pads will be generated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Page 2: Sequencer -->
+                    <div class="page" id="page2">
+                        <h3>📊 STEP SEQUENCER</h3>
+                        <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;">
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">1</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">2</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">3</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">4</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">5</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">6</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">7</div>
+                            <div class="setting-row" style="padding: 8px; background: #16213e; border-radius: 4px; cursor: pointer; text-align: center;">8</div>
+                        </div>
+
+                        <h3>🎚️ PATTERN SETTINGS</h3>
+                        <div class="setting-row">
+                            <span>BPM:</span>
+                            <input type="range" min="40" max="300" value="120" class="slider" id="bpmSlider">
+                            <span id="bpmValue">120</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>SWING:</span>
+                            <input type="range" min="0" max="100" value="0" class="slider">
+                            <span>0%</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>TIME SIG:</span>
+                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
+                                <option>4/4</option>
+                                <option>3/4</option>
+                                <option>6/8</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Page 3: Effects -->
+                    <div class="page" id="page3">
+                        <h3>🎛️ EFFECTS</h3>
+                        <div class="setting-row">
+                            <span>REVERB:</span>
+                            <input type="range" min="0" max="100" value="30" class="slider">
+                            <span>30%</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>DELAY:</span>
+                            <input type="range" min="0" max="100" value="0" class="slider">
+                            <span>0%</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>FILTER TYPE:</span>
+                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
+                                <option>LOW PASS</option>
+                                <option>HIGH PASS</option>
+                                <option>BAND PASS</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <span>COMPRESSION:</span>
+                            <input type="range" min="0" max="100" value="0" class="slider">
+                            <span>0%</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>DISTORTION:</span>
+                            <input type="range" min="0" max="100" value="0" class="slider">
+                            <span>0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Page 4: Samples -->
+                    <div class="page" id="page4">
+                        <h3>💾 SAMPLE MANAGER</h3>
+                        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                            <button style="width: 100%; padding: 10px; background: #e94560; border: none; border-radius: 4px; color: white; font-weight: 600; cursor: pointer;">📁 LOAD SAMPLE</button>
+                        </div>
+                        <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                            <strong>LOADED:</strong>
+                            <span style="font-size: 11px; color: #b0b0b0;">No sample loaded</span>
+                        </div>
+                        <h3>⚙️ SAMPLE SETTINGS</h3>
+                        <div class="setting-row">
+                            <span>VOLUME:</span>
+                            <input type="range" min="0" max="100" value="80" class="slider">
+                            <span>80%</span>
+                        </div>
+                        <div class="setting-row">
+                            <span>PITCH:</span>
+                            <input type="range" min="-24" max="24" value="0" class="slider">
+                            <span>0</span>
+                        </div>
+                    </div>
+
+                    <!-- Page 5: Recording -->
+                    <div class="page" id="page5">
+                        <h3>🎙️ RECORDING</h3>
+                        <div class="setting-row" style="flex-direction: column; align-items: center; gap: 12px; background: #0f3460; padding: 16px;">
+                            <button id="recordBtn" style="width: 100%; padding: 16px; background: #e94560; border: none; border-radius: 8px; color: white; font-weight: 700; font-size: 14px; cursor: pointer;">🔴 START RECORDING</button>
+                            <button style="width: 100%; padding: 12px; background: #16213e; border: 2px solid #2a2a3e; border-radius: 6px; color: #f5f5f5; font-weight: 600; cursor: pointer;">⏹️ STOP</button>
+                        </div>
+                        <h3>RECORDING MODE</h3>
+                        <div class="setting-row">
+                            <span>QUALITY:</span>
+                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
+                                <option>WAV (LOSSLESS)</option>
+                                <option>MP3 (128kbps)</option>
+                                <option>AAC (256kbps)</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <span>MODE:</span>
+                            <select style="background: #0f3460; color: #f5f5f5; border: 1px solid #2a2a3e; padding: 4px; border-radius: 3px; font-size: 11px;">
+                                <option>REPLACE</option>
+                                <option>MIX</option>
+                                <option>OVERDUB</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <!-- Bottom Transport Controls -->
+        <div class="bottom-controls">
+            <button class="control-btn" id="playBtn" onclick="togglePlay()">▶️ PLAY</button>
+            <button class="control-btn" onclick="stopPlayback()">⏹️ STOP</button>
+            <button class="control-btn" onclick="previousPattern()">◀️ PREV</button>
+            <button class="control-btn" onclick="nextPattern()">▶️ NEXT</button>
+        </div>
+
+        <!-- Side Controls -->
+        <div class="side-controls">
+            <button class="side-btn" onclick="clearPads()">CLEAR</button>
+            <button class="side-btn" onclick="savPattern()">💾 SAVE</button>
+            <button class="side-btn" onclick="loadPattern()">📁 LOAD</button>
+            <button class="side-btn" onclick="exportAudio()">📤 EXPORT</button>
+        </div>
+    </div>
 
     <script>
-        // Pad audio playback simulation
-        function playPad(element) {
-            const clone = element.cloneNode(true);
-            clone.style.transform = 'scale(0.95)';
-            element.parentNode.replaceChild(clone, element);
-            
-            setTimeout(() => {
-                const restore = clone.cloneNode(true);
-                restore.style.transform = 'scale(1)';
-                clone.parentNode.replaceChild(restore, clone);
-                restore.onclick = function() { playPad(this); };
-            }, 100);
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        const pagesWrapper = document.getElementById('pagesWrapper');
+        let isPlaying = false;
+        let selectedPad = null;
+        let touchStartX = 0;
 
-            // Create visual feedback
-            const feedback = document.createElement('div');
-            feedback.style.cssText = `
-                position: fixed;
-                top: ${event.clientY}px;
-                left: ${event.clientX}px;
-                pointer-events: none;
-                font-size: 1.5em;
-                opacity: 1;
-                animation: popOut 0.6s ease-out forwards;
-            `;
-            feedback.textContent = '♪';
-            document.body.appendChild(feedback);
-
-            setTimeout(() => feedback.remove(), 600);
+        // Initialize Pads
+        function initPads() {
+            const padGrid = document.getElementById('padGrid');
+            for (let i = 1; i <= 16; i++) {
+                const pad = document.createElement('div');
+                pad.className = 'pad';
+                pad.textContent = i;
+                pad.dataset.padNum = i;
+                pad.onmousedown = () => playPadSound(pad);
+                pad.ontouchstart = () => playPadSound(pad);
+                pad.onmouseup = () => releasePad(pad);
+                pad.ontouchend = () => releasePad(pad);
+                padGrid.appendChild(pad);
+            }
         }
 
-        // Add animation for pop out effect
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes popOut {
-                0% {
-                    transform: scale(1) translateY(0);
-                    opacity: 1;
-                }
-                100% {
-                    transform: scale(0.5) translateY(-30px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
+        function playPadSound(pad) {
+            pad.classList.add('selected');
+            updateDisplay(`PAD ${pad.dataset.padNum} TRIGGERED`);
+            // Audio would play here in real app
+        }
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
+        function releasePad(pad) {
+            setTimeout(() => pad.classList.remove('selected'), 100);
+        }
+
+        // Swipe Navigation
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
         });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && currentPage < pages.length - 1) {
+                    currentPage++;
+                } else if (diff < 0 && currentPage > 0) {
+                    currentPage--;
+                }
+                updatePageView();
+            }
+        });
+
+        function updatePageView() {
+            pagesWrapper.style.transform = `translateX(-${currentPage * 100}%)`;
+        }
+
+        // Display Updates
+        function updateDisplay(text) {
+            document.getElementById('displayMain').textContent = text;
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playBtn = document.getElementById('playBtn');
+            const playStatus = document.getElementById('playStatus');
+            
+            if (isPlaying) {
+                playBtn.classList.add('mode-select');
+                playStatus.textContent = 'PLAY ▶️';
+                updateDisplay('PATTERN PLAYING...');
+            } else {
+                playBtn.classList.remove('mode-select');
+                playStatus.textContent = 'STOP';
+                updateDisplay('PATTERN STOPPED');
+            }
+        }
+
+        function stopPlayback() {
+            isPlaying = false;
+            document.getElementById('playBtn').classList.remove('mode-select');
+            document.getElementById('playStatus').textContent = 'STOP';
+            updateDisplay('Ready to sample');
+        }
+
+        function nextPattern() {
+            let patNum = parseInt(document.getElementById('patternNum').textContent);
+            patNum = (patNum % 128) + 1;
+            document.getElementById('patternNum').textContent = String(patNum).padStart(2, '0');
+            updateDisplay(`PATTERN: ${String(patNum).padStart(2, '0')}`);
+        }
+
+        function previousPattern() {
+            let patNum = parseInt(document.getElementById('patternNum').textContent);
+            patNum = patNum > 1 ? patNum - 1 : 128;
+            document.getElementById('patternNum').textContent = String(patNum).padStart(2, '0');
+            updateDisplay(`PATTERN: ${String(patNum).padStart(2, '0')}`);
+        }
+
+        function clearPads() {
+            updateDisplay('PADS CLEARED');
+            setTimeout(() => updateDisplay('Ready to sample'), 1500);
+        }
+
+        function savPattern() {
+            updateDisplay('PATTERN SAVED');
+            setTimeout(() => updateDisplay('Ready to sample'), 1500);
+        }
+
+        function loadPattern() {
+            updateDisplay('LOADING PATTERN...');
+            setTimeout(() => updateDisplay('PATTERN LOADED'), 1500);
+        }
+
+        function exportAudio() {
+            updateDisplay('EXPORTING AUDIO...');
+            setTimeout(() => updateDisplay('EXPORT COMPLETE'), 2000);
+        }
+
+        // BPM Control
+        document.getElementById('bpmSlider').addEventListener('input', (e) => {
+            const bpm = e.target.value;
+            document.getElementById('bpmValue').textContent = bpm;
+            document.getElementById('bpmDisplay').textContent = bpm;
+        });
+
+        // Time Display
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            document.getElementById('time').textContent = time;
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Initialize
+        initPads();
     </script>
 </body>
 </html>
