@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Gorilla Sampler - Advanced MPC One</title>
+    <title>Gorilla Sampler - MPC One Pro</title>
     <style>
         * {
             margin: 0;
@@ -62,7 +62,6 @@
         .nav-tab.active {
             background: #ff1493;
             color: white;
-            border-radius: 8px 8px 0 0;
         }
 
         .nav-tab:last-child {
@@ -74,35 +73,36 @@
             background: #000;
             border: 2px solid #00d9ff;
             margin: 8px;
-            padding: 12px;
+            padding: 10px;
             border-radius: 6px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             color: #00d9ff;
-            font-size: 12px;
+            font-size: 11px;
             font-family: 'Courier New', monospace;
+            min-height: 100px;
         }
 
         .display-info {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .waveform-canvas {
             width: 100%;
-            height: 60px;
+            height: 50px;
             background: #1a1a3e;
             border: 1px solid #00d9ff;
             border-radius: 4px;
-            cursor: crosshair;
         }
 
         .display-main {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
+            color: #ff1493;
         }
 
         /* Content Area */
@@ -116,7 +116,7 @@
         .tab-content {
             display: none;
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             overflow-y: auto;
             width: 100%;
         }
@@ -131,14 +131,38 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
+        }
+
+        .pad-banks {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .bank-btn {
+            padding: 8px 12px;
+            background: #2a1a3e;
+            border: 2px solid #00d9ff;
+            border-radius: 4px;
+            color: #00d9ff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 11px;
+            transition: all 0.2s;
+        }
+
+        .bank-btn.active {
+            background: #ff1493;
+            border-color: #ff1493;
+            color: white;
         }
 
         .pads-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
             flex: 1;
             min-height: 0;
         }
@@ -146,7 +170,7 @@
         .pad {
             background: linear-gradient(135deg, #c41e3a, #8b0000);
             border: 3px solid #00d9ff;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.05s;
             display: flex;
@@ -157,22 +181,20 @@
             color: #00d9ff;
             user-select: none;
             touch-action: manipulation;
-            font-size: 14px;
+            font-size: 13px;
             box-shadow: inset 0 0 10px rgba(0, 217, 255, 0.3);
             position: relative;
             overflow: hidden;
+            gap: 4px;
         }
 
         .pad-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #888;
-            position: absolute;
-            top: 2px;
-            left: 4px;
         }
 
         .pad-status {
-            font-size: 9px;
+            font-size: 8px;
             color: #00d9ff;
         }
 
@@ -183,39 +205,87 @@
         .pad:active {
             background: linear-gradient(135deg, #ff1493, #c41e3a);
             border-color: #ff1493;
-            transform: scale(0.95);
+            transform: scale(0.93);
             box-shadow: 0 0 30px rgba(255, 20, 147, 0.8);
         }
 
         .pad.loaded {
-            background: linear-gradient(135deg, #00d9ff, #00ffff);
-            border-color: #ff1493;
+            background: linear-gradient(135deg, #06d6a0, #00ffaa);
+            border-color: #06d6a0;
             color: #000;
+            font-weight: 700;
         }
 
         .pad.playing {
             background: linear-gradient(135deg, #00d9ff, #00ffff);
             border-color: #ff1493;
             color: #000;
-            box-shadow: 0 0 30px rgba(0, 217, 255, 0.8), inset 0 0 15px rgba(255, 20, 147, 0.4);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.8);
+        }
+
+        .pad.recording {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            border-color: #ff1493;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         /* Sequencer */
+        .sequencer-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sequencer-controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 8px 12px;
+            background: #2a1a3e;
+            border: 2px solid #00d9ff;
+            border-radius: 4px;
+            color: #00d9ff;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+
+        .control-btn:active {
+            background: #ff1493;
+            border-color: #ff1493;
+            color: white;
+        }
+
+        .control-btn.active {
+            background: #ff1493;
+            border-color: #ff1493;
+            color: white;
+        }
+
         .sequencer-grid {
             display: grid;
             grid-template-columns: repeat(16, 1fr);
-            gap: 4px;
-            margin-bottom: 16px;
+            gap: 3px;
+            margin-bottom: 12px;
         }
 
         .step {
             aspect-ratio: 1;
             background: #1a0f2e;
             border: 2px solid #00d9ff;
-            border-radius: 4px;
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.1s;
-            font-size: 9px;
+            font-size: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -228,7 +298,6 @@
         .step.active {
             background: #ff1493;
             border-color: #ff1493;
-            box-shadow: 0 0 15px rgba(255, 20, 147, 0.8);
         }
 
         .step.playing {
@@ -236,25 +305,79 @@
             box-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
         }
 
-        /* Controls */
+        /* Slider Group */
+        .slider-group {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #1a0f2e;
+            border: 2px solid #00d9ff;
+            border-radius: 4px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            background: #2a1a3e;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ff1493;
+            cursor: pointer;
+            border: 2px solid #00d9ff;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #ff1493;
+            cursor: pointer;
+            border: 2px solid #00d9ff;
+        }
+
+        /* File input */
+        input[type="file"] {
+            padding: 6px;
+            background: #2a1a3e;
+            border: 2px solid #00d9ff;
+            border-radius: 4px;
+            color: #00d9ff;
+            font-size: 10px;
+        }
+
+        /* Controls Bottom */
         .controls {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            padding: 12px;
+            gap: 6px;
+            padding: 10px;
             background: #1a0f2e;
             border-top: 2px solid #00d9ff;
         }
 
         .btn {
-            padding: 12px;
+            padding: 10px;
             background: #2a1a3e;
             border: 2px solid #00d9ff;
-            border-radius: 6px;
+            border-radius: 4px;
             color: #00d9ff;
             cursor: pointer;
             font-weight: 600;
-            font-size: 11px;
+            font-size: 10px;
             transition: all 0.2s;
         }
 
@@ -274,121 +397,15 @@
             color: white;
         }
 
-        /* Control Sliders */
-        .slider-group {
-            margin-bottom: 12px;
-            padding: 12px;
-            background: #1a0f2e;
-            border: 2px solid #00d9ff;
-            border-radius: 6px;
-        }
-
-        .slider-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 6px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #2a1a3e;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #ff1493;
-            cursor: pointer;
-            border: 2px solid #00d9ff;
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #ff1493;
-            cursor: pointer;
-            border: 2px solid #00d9ff;
-        }
-
-        /* Chopping Interface */
-        .chop-interface {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .chop-area {
-            padding: 12px;
-            background: #1a0f2e;
-            border: 2px solid #00d9ff;
-            border-radius: 6px;
-        }
-
-        .chop-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        .chop-btn {
-            padding: 10px;
-            background: #2a1a3e;
-            border: 2px solid #00d9ff;
-            border-radius: 4px;
-            color: #00d9ff;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .chop-btn:active {
-            background: #ff1493;
-            border-color: #ff1493;
-        }
-
-        .chop-markers {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .chop-marker {
-            padding: 8px 12px;
-            background: #2a1a3e;
-            border: 2px solid #ff1493;
-            border-radius: 4px;
-            font-size: 10px;
-            cursor: pointer;
-        }
-
-        .chop-marker:hover {
-            background: #ff1493;
-            color: #000;
-        }
-
-        /* File input */
-        input[type="file"] {
-            padding: 8px;
-            background: #2a1a3e;
-            border: 2px solid #00d9ff;
-            border-radius: 4px;
-            color: #00d9ff;
-            cursor: pointer;
+        .btn.recording {
+            background: #ff0000;
+            border-color: #ff0000;
+            animation: pulse 0.5s infinite;
         }
 
         /* Scrollbar */
         .tab-content::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
 
         .tab-content::-webkit-scrollbar-track {
@@ -397,324 +414,219 @@
 
         .tab-content::-webkit-scrollbar-thumb {
             background: #ff1493;
-            border-radius: 3px;
         }
 
         @media (max-height: 700px) {
-            .pad {
-                font-size: 12px;
-            }
-
-            .waveform-canvas {
-                height: 40px;
-            }
-
-            .display {
-                padding: 8px;
-                gap: 4px;
-            }
+            .pad { font-size: 11px; }
+            .waveform-canvas { height: 35px; }
+            .display { min-height: 80px; padding: 8px; }
         }
     </style>
 </head>
 <body>
     <!-- Status Bar -->
     <div class="status-bar">
-        <div>🦍 GORILLA SAMPLER</div>
-        <div id="status-info">BPM: <span id="bpmDisplay">110</span> | <span id="timeDisplay">00:00</span></div>
+        <div>🦍 GORILLA SAMPLER PRO</div>
+        <div id="status-info">BPM: <span id="bpmDisplay">110</span> | REC: <span id="recStatus">OFF</span></div>
     </div>
 
     <div class="container">
         <!-- Navigation Tabs -->
         <div class="nav-tabs">
-            <div class="nav-tab active" onclick="switchTab('sample')">SAMPLE</div>
-            <div class="nav-tab" onclick="switchTab('chop')">CHOP</div>
-            <div class="nav-tab" onclick="switchTab('sequence')">SEQUENCE</div>
-            <div class="nav-tab" onclick="switchTab('perform')">PERFORM</div>
+            <div class="nav-tab active" onclick="switchTab('perform')">PERFORM</div>
+            <div class="nav-tab" onclick="switchTab('sequencer')">SEQUENCER</div>
+            <div class="nav-tab" onclick="switchTab('sample')">SAMPLE</div>
+            <div class="nav-tab" onclick="switchTab('mixer')">MIXER</div>
         </div>
 
-        <!-- Display Screen with Waveform -->
+        <!-- Display Screen -->
         <div class="display">
             <div class="display-info">
-                <span>Pattern: <span id="patternNum">01</span></span>
-                <span id="playStatus">STOPPED</span>
-                <span>Volume: <span id="volumeDisplay">100</span>%</span>
+                <span>Pattern: <span id="patternNum">01</span> | <span id="playStatus">STOPPED</span> | Bank: <span id="bankDisplay">A</span></span>
+                <span id="timeDisplay">00:00</span>
             </div>
             <canvas id="waveformCanvas" class="waveform-canvas"></canvas>
-            <div class="display-main" id="displayMain">Load a sample to begin</div>
+            <div class="display-main" id="displayMain">Ready to sample</div>
         </div>
 
         <!-- Content -->
         <div class="content">
+            <!-- PERFORM Tab (Main Pads) -->
+            <div id="perform" class="tab-content active">
+                <div class="pads-section">
+                    <!-- Pad Banks -->
+                    <div class="pad-banks">
+                        <button class="bank-btn active" onclick="switchBank('A')">BANK A</button>
+                        <button class="bank-btn" onclick="switchBank('B')">BANK B</button>
+                        <button class="bank-btn" onclick="switchBank('C')">BANK C</button>
+                        <button class="bank-btn" onclick="switchBank('D')">BANK D</button>
+                    </div>
+
+                    <!-- 16 Pads -->
+                    <div class="pads-container" id="padGrid"></div>
+                </div>
+            </div>
+
+            <!-- SEQUENCER Tab -->
+            <div id="sequencer" class="tab-content">
+                <div class="sequencer-container">
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>BPM</span>
+                            <span id="bpmValue">110</span>
+                        </div>
+                        <input type="range" min="60" max="180" value="110" id="bpmControl" oninput="updateBPM(this.value)">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>Swing</span>
+                            <span id="swingValue">0</span>%
+                        </div>
+                        <input type="range" min="0" max="100" value="0" id="swing">
+                    </div>
+
+                    <div class="sequencer-controls">
+                        <button class="control-btn" id="quantizeBtn" onclick="toggleQuantize()">QUANTIZE: ON</button>
+                        <button class="control-btn" id="recBtn" onclick="toggleRecording()">REC</button>
+                        <button class="control-btn" id="playSeqBtn" onclick="playSequence()">PLAY</button>
+                        <button class="control-btn" onclick="stopSequence()">STOP</button>
+                    </div>
+
+                    <div style="font-size: 11px; color: #00d9ff; margin-bottom: 8px;">Press pads to record (REC mode on)</div>
+                    <div class="sequencer-grid" id="sequencerGrid"></div>
+
+                    <div class="controls">
+                        <button class="btn" onclick="clearSequence()">CLEAR</button>
+                        <button class="btn" onclick="savePattern()">SAVE</button>
+                        <button class="btn" onclick="prevPattern()">◀️ PREV</button>
+                        <button class="btn" onclick="nextPattern()">▶️ NEXT</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- SAMPLE Tab -->
-            <div id="sample" class="tab-content active">
+            <div id="sample" class="tab-content">
                 <div class="slider-group">
-                    <div class="slider-label">Load Audio File</div>
+                    <div class="slider-label">Load Audio</div>
                     <input type="file" id="audioFile" accept="audio/*" onchange="loadAudioFile(event)">
                 </div>
 
                 <div class="slider-group">
                     <div class="slider-label">
                         <span>Sample Volume</span>
-                        <span id="sampleVolValue">100</span>%
+                        <span id="volValue">100</span>%
                     </div>
-                    <input type="range" min="0" max="100" value="100" id="sampleVol" oninput="updateSampleVol(this.value)">
+                    <input type="range" min="0" max="100" value="100" id="sampleVol" oninput="updateVol(this.value)">
                 </div>
 
                 <div class="slider-group">
                     <div class="slider-label">
-                        <span>Playback Speed</span>
-                        <span id="speedValue">1.0</span>x
+                        <span>Start Point</span>
+                        <span id="startVal">0</span>%
                     </div>
-                    <input type="range" min="0.5" max="2" step="0.1" value="1" id="speed">
+                    <input type="range" min="0" max="100" value="0" id="chopStart" oninput="updateChopStart(this.value)">
                 </div>
 
                 <div class="slider-group">
                     <div class="slider-label">
-                        <span>Loop Start</span>
-                        <span id="loopStartValue">0</span>ms
+                        <span>End Point</span>
+                        <span id="endVal">100</span>%
                     </div>
-                    <input type="range" min="0" max="100" value="0" id="loopStart">
+                    <input type="range" min="0" max="100" value="100" id="chopEnd" oninput="updateChopEnd(this.value)">
                 </div>
 
-                <div class="slider-group">
-                    <div class="slider-label">
-                        <span>Loop End</span>
-                        <span id="loopEndValue">100</span>%
-                    </div>
-                    <input type="range" min="0" max="100" value="100" id="loopEnd">
-                </div>
-
-                <div class="controls" style="border-top: 2px solid #00d9ff; margin-top: auto;">
-                    <button class="btn" onclick="playSample()">▶️ PLAY</button>
-                    <button class="btn" onclick="stopSample()">⏹️ STOP</button>
-                    <button class="btn" onclick="loopSample()">🔄 LOOP</button>
-                    <button class="btn" onclick="holdSample()">🔗 HOLD</button>
+                <div class="controls" style="margin-top: auto;">
+                    <button class="btn" onclick="assignToSelectedPad()">✓ ASSIGN</button>
+                    <button class="btn" onclick="playSample()">PLAY</button>
+                    <button class="btn" onclick="stopSample()">STOP</button>
+                    <button class="btn" onclick="clearSample()">CLEAR</button>
                 </div>
             </div>
 
-            <!-- CHOP Tab -->
-            <div id="chop" class="tab-content">
-                <div class="chop-interface">
-                    <div class="chop-area">
-                        <div class="slider-label" style="margin-bottom: 12px;">SAMPLE CHOPPER</div>
-                        <canvas id="chopWaveform" class="waveform-canvas"></canvas>
-                        <div style="font-size: 10px; color: #888; margin-top: 8px;">Click on waveform to set chop points</div>
-                    </div>
-
-                    <div class="chop-area">
-                        <div class="slider-label">Chop Start</div>
-                        <input type="range" min="0" max="100" value="0" id="chopStart" oninput="updateChopPreview()">
-                        <div style="font-size: 10px; color: #00d9ff; margin-top: 6px;">Position: <span id="chopStartVal">0</span>%</div>
-                    </div>
-
-                    <div class="chop-area">
-                        <div class="slider-label">Chop End</div>
-                        <input type="range" min="0" max="100" value="100" id="chopEnd" oninput="updateChopPreview()">
-                        <div style="font-size: 10px; color: #00d9ff; margin-top: 6px;">Position: <span id="chopEndVal">100</span>%</div>
-                    </div>
-
-                    <div class="chop-area">
-                        <div style="font-size: 11px; color: #00d9ff; margin-bottom: 8px;">Select Pad to Assign Chop:</div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                            <button class="chop-btn" onclick="assignChopToPad(1)">PAD 1</button>
-                            <button class="chop-btn" onclick="assignChopToPad(2)">PAD 2</button>
-                            <button class="chop-btn" onclick="assignChopToPad(3)">PAD 3</button>
-                            <button class="chop-btn" onclick="assignChopToPad(4)">PAD 4</button>
-                            <button class="chop-btn" onclick="assignChopToPad(5)">PAD 5</button>
-                            <button class="chop-btn" onclick="assignChopToPad(6)">PAD 6</button>
-                            <button class="chop-btn" onclick="assignChopToPad(7)">PAD 7</button>
-                            <button class="chop-btn" onclick="assignChopToPad(8)">PAD 8</button>
-                        </div>
-                    </div>
-
-                    <div class="chop-area">
-                        <div style="font-size: 10px; color: #888; margin-top: 8px;">Assigned Chops:</div>
-                        <div class="chop-markers" id="chopMarkers"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SEQUENCE Tab -->
-            <div id="sequence" class="tab-content">
+            <!-- MIXER Tab -->
+            <div id="mixer" class="tab-content">
                 <div class="slider-group">
                     <div class="slider-label">
-                        <span>BPM</span>
-                        <span id="bpmValue">110</span>
+                        <span>Master Volume</span>
+                        <span id="masterVolValue">100</span>%
                     </div>
-                    <input type="range" min="60" max="180" value="110" id="bpmControl" oninput="updateBPM(this.value)">
+                    <input type="range" min="0" max="100" value="100" id="masterVol">
                 </div>
 
                 <div class="slider-group">
                     <div class="slider-label">
-                        <span>Swing</span>
-                        <span id="swingValue">0</span>%
+                        <span>Reverb</span>
+                        <span id="reverbValue">30</span>%
                     </div>
-                    <input type="range" min="0" max="100" value="0" id="swing">
+                    <input type="range" min="0" max="100" value="30" id="reverb">
                 </div>
 
-                <div style="margin-bottom: 12px;">
-                    <div style="font-size: 12px; color: #00d9ff; margin-bottom: 8px;">16-Step Sequencer</div>
-                    <div class="sequencer-grid" id="sequencerGrid">
-                        <!-- Steps will be generated by JS -->
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Delay</span>
+                        <span id="delayValue">0</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="0" id="delay">
                 </div>
 
-                <div class="controls" style="border-top: 2px solid #00d9ff;">
-                    <button class="btn" id="playSeqBtn" onclick="playSequence()">▶️ PLAY</button>
-                    <button class="btn" onclick="stopSequence()">⏹️ STOP</button>
-                    <button class="btn" onclick="savePattern()">💾 SAVE</button>
-                    <button class="btn" onclick="loadPattern()">📁 LOAD</button>
-                </div>
-            </div>
-
-            <!-- PERFORM Tab -->
-            <div id="perform" class="tab-content">
-                <div class="pads-section">
-                    <div class="pads-container" id="padGrid">
-                        <!-- Pads will be generated by JS -->
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Filter Cutoff</span>
+                        <span id="filterValue">100</span>%
                     </div>
+                    <input type="range" min="0" max="100" value="100" id="filter">
+                </div>
+
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Compression</span>
+                        <span id="compressionValue">0</span>%
+                    </div>
+                    <input type="range" min="0" max="100" value="0" id="compression">
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Transport Controls -->
+        <!-- Bottom Transport -->
         <div class="controls">
             <button class="btn" id="playBtn" onclick="togglePlay()">▶️ PLAY</button>
             <button class="btn" onclick="stopPlayback()">⏹️ STOP</button>
-            <button class="btn" onclick="prevPattern()">◀️ PREV</button>
-            <button class="btn" onclick="nextPattern()">▶️ NEXT</button>
+            <button class="btn" id="recMainBtn" onclick="toggleMainRecording()">🔴 REC</button>
+            <button class="btn" onclick="exportBeat()">📤 EXPORT</button>
         </div>
     </div>
 
     <script>
-        // Audio Context & Variables
+        // Audio Engine
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const masterGain = audioContext.createGain();
+        masterGain.connect(audioContext.destination);
+
+        // State
         let currentAudioBuffer = null;
         let currentSource = null;
         let isPlaying = false;
-        let isLooping = false;
-        let isHolding = false;
+        let isRecording = false;
+        let quantizeEnabled = true;
         let currentBPM = 110;
         let currentPattern = 1;
+        let currentBank = 'A';
+        let selectedPadForChop = null;
         let sequencerSteps = new Array(16).fill(0);
-        let padSamples = new Array(16).fill(null);
-        let chopPoints = [];
-        let selectedChops = {};
+        let recordedPadPresses = [];
+        let padSamples = { A: {}, B: {}, C: {}, D: {} };
 
-        // Initialize Canvas
-        const waveformCanvas = document.getElementById('waveformCanvas');
-        const chopCanvas = document.getElementById('chopWaveform');
-        const waveCtx = waveformCanvas.getContext('2d');
-        const chopCtx = chopCanvas.getContext('2d');
-
-        // Load Audio File
-        function loadAudioFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                audioContext.decodeAudioData(e.target.result, (buffer) => {
-                    currentAudioBuffer = buffer;
-                    updateDisplay(`SAMPLE LOADED: ${file.name}`);
-                    drawWaveform(waveCtx, buffer, waveformCanvas);
-                    drawWaveform(chopCtx, buffer, chopCanvas);
-                }, (err) => {
-                    updateDisplay('Error loading audio');
-                });
+        // Initialize
+        function init() {
+            initPads();
+            initSequencer();
+            updateTime();
+            setInterval(updateTime, 1000);
+            document.getElementById('masterVol').oninput = (e) => {
+                masterGain.gain.value = e.target.value / 100;
+                document.getElementById('masterVolValue').textContent = e.target.value;
             };
-            reader.readAsArrayBuffer(file);
-        }
-
-        // Draw Waveform
-        function drawWaveform(ctx, buffer, canvas) {
-            const width = canvas.width;
-            const height = canvas.height;
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, width, height);
-
-            if (!buffer) return;
-
-            const data = buffer.getChannelData(0);
-            const step = Math.ceil(data.length / width);
-            const amp = height / 2;
-
-            ctx.strokeStyle = '#00d9ff';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-
-            for (let i = 0; i < width; i++) {
-                let min = 1.0;
-                let max = -1.0;
-                for (let j = 0; j < step; j++) {
-                    const datum = data[i * step + j];
-                    if (datum < min) min = datum;
-                    if (datum > max) max = datum;
-                }
-                ctx.lineTo(i, amp - max * amp);
-                ctx.lineTo(i, amp - min * amp);
-            }
-            ctx.stroke();
-
-            // Draw center line
-            ctx.strokeStyle = '#ff1493';
-            ctx.setLineDash([5, 5]);
-            ctx.beginPath();
-            ctx.moveTo(0, amp);
-            ctx.lineTo(width, amp);
-            ctx.stroke();
-            ctx.setLineDash([]);
-        }
-
-        // Chop Update
-        function updateChopPreview() {
-            const start = document.getElementById('chopStart').value;
-            const end = document.getElementById('chopEnd').value;
-            document.getElementById('chopStartVal').textContent = start;
-            document.getElementById('chopEndVal').textContent = end;
-        }
-
-        // Assign Chop to Pad
-        function assignChopToPad(padNum) {
-            const start = parseInt(document.getElementById('chopStart').value);
-            const end = parseInt(document.getElementById('chopEnd').value);
-
-            selectedChops[padNum] = { start: start / 100, end: end / 100 };
-
-            // Extract audio chunk
-            if (currentAudioBuffer) {
-                const startSample = Math.floor(currentAudioBuffer.length * (start / 100));
-                const endSample = Math.floor(currentAudioBuffer.length * (end / 100));
-                const length = endSample - startSample;
-
-                const newBuffer = audioContext.createBuffer(
-                    currentAudioBuffer.numberOfChannels,
-                    length,
-                    currentAudioBuffer.sampleRate
-                );
-
-                for (let ch = 0; ch < currentAudioBuffer.numberOfChannels; ch++) {
-                    const sourceData = currentAudioBuffer.getChannelData(ch);
-                    const targetData = newBuffer.getChannelData(ch);
-                    targetData.set(sourceData.slice(startSample, endSample));
-                }
-
-                padSamples[padNum - 1] = newBuffer;
-                updateDisplay(`PAD ${padNum} LOADED`);
-                updateChopMarkers();
-            }
-        }
-
-        // Update Chop Markers Display
-        function updateChopMarkers() {
-            const container = document.getElementById('chopMarkers');
-            container.innerHTML = '';
-            Object.entries(selectedChops).forEach(([padNum, chop]) => {
-                const marker = document.createElement('div');
-                marker.className = 'chop-marker';
-                marker.textContent = `Pad ${padNum}: ${Math.round(chop.start * 100)}%-${Math.round(chop.end * 100)}%`;
-                container.appendChild(marker);
-            });
         }
 
         // Initialize Pads
@@ -725,66 +637,175 @@
                 pad.className = 'pad';
                 pad.id = `pad-${i}`;
                 pad.innerHTML = `
-                    <div class="pad-label">PAD ${i}</div>
-                    <div class="pad-status" style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                        ${padSamples[i - 1] ? '◆' : '◇'}
-                    </div>
+                    <div class="pad-label">P${i}</div>
+                    <div class="pad-status">◇</div>
                 `;
-                pad.addEventListener('mousedown', () => padPress(pad, i));
-                pad.addEventListener('touchstart', (e) => { e.preventDefault(); padPress(pad, i); });
-                pad.addEventListener('mouseup', () => padRelease(pad));
-                pad.addEventListener('touchend', (e) => { e.preventDefault(); padRelease(pad); });
+                pad.addEventListener('mousedown', () => padDown(i, pad));
+                pad.addEventListener('touchstart', (e) => { e.preventDefault(); padDown(i, pad); });
+                pad.addEventListener('mouseup', () => padUp(pad));
+                pad.addEventListener('touchend', (e) => { e.preventDefault(); padUp(pad); });
                 padGrid.appendChild(pad);
             }
         }
 
-        function padPress(pad, num) {
+        // Pad Events
+        function padDown(num, pad) {
             pad.classList.add('playing');
-            if (padSamples[num - 1]) {
-                playPadSample(padSamples[num - 1]);
-                updateDisplay(`PAD ${num} TRIGGERED`);
+            playPadSound(num);
+
+            if (isRecording) {
+                recordedPadPresses.push({
+                    pad: num,
+                    time: audioContext.currentTime,
+                    velocity: Math.random() * 0.5 + 0.5
+                });
+                pad.classList.add('recording');
+            }
+
+            updateDisplay(`PAD ${num} TRIGGERED`);
+        }
+
+        function padUp(pad) {
+            setTimeout(() => {
+                pad.classList.remove('playing', 'recording');
+            }, 100);
+        }
+
+        function playPadSound(padNum) {
+            const key = `pad${padNum}`;
+            if (padSamples[currentBank][key]) {
+                if (currentSource) currentSource.stop();
+                currentSource = audioContext.createBufferSource();
+                currentSource.buffer = padSamples[currentBank][key];
+                currentSource.connect(masterGain);
+                currentSource.start(0);
             } else {
-                playTone(440 * Math.pow(2, (num - 1) / 12));
-                updateDisplay(`PAD ${num}`);
+                playTone(440 * Math.pow(2, (padNum - 1) / 12));
             }
         }
 
-        function padRelease(pad) {
-            setTimeout(() => pad.classList.remove('playing'), 100);
-        }
-
-        function playPadSample(buffer) {
-            if (currentSource) currentSource.stop();
-            currentSource = audioContext.createBufferSource();
-            currentSource.buffer = buffer;
-            currentSource.connect(audioContext.destination);
-            currentSource.start(0);
-        }
-
-        function playTone(frequency) {
+        function playTone(freq) {
             const osc = audioContext.createOscillator();
             const gain = audioContext.createGain();
             osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.value = frequency;
-            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            gain.connect(masterGain);
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
             osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.2);
+            osc.stop(audioContext.currentTime + 0.15);
         }
 
-        // Sample Controls
-        function playSample() {
+        // Bank Switching
+        function switchBank(bank) {
+            currentBank = bank;
+            document.querySelectorAll('.bank-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('bankDisplay').textContent = bank;
+            updateDisplay(`BANK ${bank} SELECTED`);
+            updatePadStatus();
+        }
+
+        // Sample Loading & Chopping
+        function loadAudioFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                audioContext.decodeAudioData(e.target.result, (buffer) => {
+                    currentAudioBuffer = buffer;
+                    updateDisplay(`LOADED: ${file.name.slice(0, 15)}`);
+                    drawWaveform(document.getElementById('waveformCanvas'), buffer);
+                }, (err) => updateDisplay('ERROR loading audio'));
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function drawWaveform(canvas, buffer) {
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+
+            if (!buffer) return;
+            const data = buffer.getChannelData(0);
+            const step = Math.ceil(data.length / width);
+            const amp = height / 2;
+
+            ctx.strokeStyle = '#00d9ff';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (let i = 0; i < width; i++) {
+                let min = 1.0, max = -1.0;
+                for (let j = 0; j < step; j++) {
+                    const datum = data[i * step + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+                ctx.lineTo(i, amp - max * amp);
+                ctx.lineTo(i, amp - min * amp);
+            }
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ff1493';
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(0, amp);
+            ctx.lineTo(width, amp);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function updateChopStart(val) {
+            document.getElementById('startVal').textContent = val;
+        }
+
+        function updateChopEnd(val) {
+            document.getElementById('endVal').textContent = val;
+        }
+
+        function assignToSelectedPad() {
             if (!currentAudioBuffer) {
                 updateDisplay('No sample loaded');
                 return;
             }
+
+            const padNum = prompt('Enter pad number (1-16):');
+            if (!padNum || padNum < 1 || padNum > 16) return;
+
+            const start = parseInt(document.getElementById('chopStart').value) / 100;
+            const end = parseInt(document.getElementById('chopEnd').value) / 100;
+
+            const startSample = Math.floor(currentAudioBuffer.length * start);
+            const endSample = Math.floor(currentAudioBuffer.length * end);
+            const length = endSample - startSample;
+
+            const newBuffer = audioContext.createBuffer(
+                currentAudioBuffer.numberOfChannels,
+                length,
+                currentAudioBuffer.sampleRate
+            );
+
+            for (let ch = 0; ch < currentAudioBuffer.numberOfChannels; ch++) {
+                const src = currentAudioBuffer.getChannelData(ch);
+                const dst = newBuffer.getChannelData(ch);
+                dst.set(src.slice(startSample, endSample));
+            }
+
+            padSamples[currentBank][`pad${padNum}`] = newBuffer;
+            updateDisplay(`PAD ${padNum} ASSIGNED (${currentBank})`);
+            updatePadStatus();
+        }
+
+        function playSample() {
+            if (!currentAudioBuffer) return;
             if (currentSource) currentSource.stop();
             currentSource = audioContext.createBufferSource();
             currentSource.buffer = currentAudioBuffer;
-            currentSource.connect(audioContext.destination);
+            currentSource.connect(masterGain);
             currentSource.start(0);
-            updateDisplay('PLAYING SAMPLE');
         }
 
         function stopSample() {
@@ -792,21 +813,15 @@
                 currentSource.stop();
                 currentSource = null;
             }
-            updateDisplay('Sample stopped');
         }
 
-        function loopSample() {
-            isLooping = !isLooping;
-            updateDisplay(isLooping ? 'LOOPING ON' : 'LOOPING OFF');
+        function clearSample() {
+            currentAudioBuffer = null;
+            updateDisplay('Sample cleared');
         }
 
-        function holdSample() {
-            isHolding = !isHolding;
-            updateDisplay(isHolding ? 'HOLD ON' : 'HOLD OFF');
-        }
-
-        function updateSampleVol(value) {
-            document.getElementById('sampleVolValue').textContent = value;
+        function updateVol(val) {
+            document.getElementById('volValue').textContent = val;
         }
 
         // Sequencer
@@ -815,7 +830,7 @@
             for (let i = 0; i < 16; i++) {
                 const step = document.createElement('div');
                 step.className = 'step';
-                step.textContent = i + 1;
+                step.textContent = (i + 1).toString().padStart(2, '0');
                 step.dataset.step = i;
                 step.addEventListener('click', () => toggleStep(step, i));
                 grid.appendChild(step);
@@ -827,6 +842,26 @@
             stepEl.classList.toggle('active');
         }
 
+        function toggleRecording() {
+            isRecording = !isRecording;
+            const recBtn = document.getElementById('recBtn');
+            if (isRecording) {
+                recBtn.classList.add('recording');
+                recordedPadPresses = [];
+                updateDisplay('RECORDING...');
+            } else {
+                recBtn.classList.remove('recording');
+                updateDisplay('RECORDING STOPPED');
+            }
+            document.getElementById('recStatus').textContent = isRecording ? 'ON' : 'OFF';
+        }
+
+        function toggleQuantize() {
+            quantizeEnabled = !quantizeEnabled;
+            const btn = document.getElementById('quantizeBtn');
+            btn.textContent = `QUANTIZE: ${quantizeEnabled ? 'ON' : 'OFF'}`;
+        }
+
         function playSequence() {
             isPlaying = !isPlaying;
             if (isPlaying) {
@@ -835,7 +870,6 @@
                 runSequencer();
             } else {
                 document.getElementById('playSeqBtn').classList.remove('active');
-                updateDisplay('SEQUENCE PAUSED');
             }
         }
 
@@ -856,16 +890,23 @@
                     s.classList.remove('playing');
                     if (idx === step) s.classList.add('playing');
                 });
-                if (sequencerSteps[step]) {
-                    playTone(440);
-                }
+                if (sequencerSteps[step]) playTone(440);
                 step = (step + 1) % 16;
                 setTimeout(playStep, stepDuration);
             };
             playStep();
         }
 
-        // Pattern Controls
+        function clearSequence() {
+            sequencerSteps = new Array(16).fill(0);
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            updateDisplay('Sequence cleared');
+        }
+
+        function savePattern() {
+            updateDisplay(`PATTERN ${currentPattern} SAVED`);
+        }
+
         function nextPattern() {
             currentPattern = (currentPattern % 128) + 1;
             document.getElementById('patternNum').textContent = String(currentPattern).padStart(2, '0');
@@ -878,27 +919,69 @@
             updateDisplay(`PATTERN: ${String(currentPattern).padStart(2, '0')}`);
         }
 
-        function savePattern() {
-            updateDisplay('PATTERN SAVED');
+        // Main Controls
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const playBtn = document.getElementById('playBtn');
+            if (isPlaying) {
+                playBtn.classList.add('active');
+                document.getElementById('playStatus').textContent = 'PLAYING ▶️';
+            } else {
+                playBtn.classList.remove('active');
+                document.getElementById('playStatus').textContent = 'PAUSED';
+            }
         }
 
-        function loadPattern() {
-            updateDisplay('PATTERN LOADED');
+        function stopPlayback() {
+            isPlaying = false;
+            document.getElementById('playBtn').classList.remove('active');
+            document.getElementById('playStatus').textContent = 'STOPPED';
+        }
+
+        function toggleMainRecording() {
+            isRecording = !isRecording;
+            const btn = document.getElementById('recMainBtn');
+            if (isRecording) {
+                btn.classList.add('recording');
+            } else {
+                btn.classList.remove('recording');
+            }
+        }
+
+        function exportBeat() {
+            updateDisplay('EXPORT: Check downloads folder');
         }
 
         // BPM Control
-        function updateBPM(value) {
-            currentBPM = parseInt(value);
-            document.getElementById('bpmValue').textContent = value;
-            document.getElementById('bpmDisplay').textContent = value;
+        function updateBPM(val) {
+            currentBPM = parseInt(val);
+            document.getElementById('bpmValue').textContent = val;
+            document.getElementById('bpmDisplay').textContent = val;
         }
 
-        // Display Update
+        // Display & UI
         function updateDisplay(text) {
             document.getElementById('displayMain').textContent = text;
         }
 
-        // Tab Switching
+        function updatePadStatus() {
+            for (let i = 1; i <= 16; i++) {
+                const pad = document.getElementById(`pad-${i}`);
+                const hasSound = padSamples[currentBank][`pad${i}`];
+                if (hasSound) {
+                    pad.classList.add('loaded');
+                } else {
+                    pad.classList.remove('loaded');
+                }
+            }
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            document.getElementById('timeDisplay').textContent = time;
+        }
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
@@ -906,51 +989,8 @@
             event.target.classList.add('active');
         }
 
-        // Transport
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                document.getElementById('playBtn').classList.add('active');
-                updateDisplay('PLAYING');
-            } else {
-                document.getElementById('playBtn').classList.remove('active');
-                updateDisplay('PAUSED');
-            }
-        }
-
-        function stopPlayback() {
-            isPlaying = false;
-            document.getElementById('playBtn').classList.remove('active');
-            updateDisplay('STOPPED');
-        }
-
-        // Time Display
-        function updateTime() {
-            const now = new Date();
-            const time = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
-            document.getElementById('timeDisplay').textContent = time;
-        }
-
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        // Update slider labels
-        document.getElementById('speed').oninput = function() {
-            document.getElementById('speedValue').textContent = this.value;
-        };
-        document.getElementById('loopStart').oninput = function() {
-            document.getElementById('loopStartValue').textContent = this.value;
-        };
-        document.getElementById('loopEnd').oninput = function() {
-            document.getElementById('loopEndValue').textContent = this.value;
-        };
-        document.getElementById('swing').oninput = function() {
-            document.getElementById('swingValue').textContent = this.value;
-        };
-
-        // Initialize
-        initPads();
-        initSequencer();
+        // Start
+        init();
     </script>
 </body>
 </html>
